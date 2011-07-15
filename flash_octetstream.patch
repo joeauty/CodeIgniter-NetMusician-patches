@@ -1,0 +1,49 @@
+From 13255d17f231fc179e40f8d83202866ce1de5bf0 Mon Sep 17 00:00:00 2001
+From: Joe Auty <joe@netmusician.org>
+Date: Fri, 15 Jul 2011 16:17:13 -0400
+Subject: [PATCH] Fix for Flash uploader and YUI3 where upload types of
+ application/octet-stream are re-examined and assigned
+ correct file type
+
+---
+ system/libraries/Upload.php |   24 ++++++++++++++++++++++++
+ 1 files changed, 24 insertions(+), 0 deletions(-)
+
+diff --git a/system/libraries/Upload.php b/system/libraries/Upload.php
+index e80049f..e76c957 100755
+--- a/system/libraries/Upload.php
++++ b/system/libraries/Upload.php
+@@ -592,6 +592,30 @@ class CI_Upload {
+ 			$this->set_error('upload_no_file_types');
+ 			return FALSE;
+ 		}
++		
++		/* NetMusician hack */
++		if ( $this->file_type == 'application/octet-stream' )
++		{
++		   if ( function_exists('finfo_file') )
++		   {
++
++		      $finfo = finfo_open(FILEINFO_MIME_TYPE);
++		      $php_mime = finfo_file($finfo, $this->file_temp);
++
++		   }
++		   elseif ( function_exists('mime_content_type') )
++		   {
++
++		      $php_mime = mime_content_type( $this->file_temp );
++
++		   }
++
++		   if ( $php_mime )
++		   {
++		      $this->file_type = $php_mime;
++		   }
++		}
++		/* End hack */
+ 
+ 		$ext = strtolower(ltrim($this->file_ext, '.'));
+ 
+-- 
+1.7.5.4
+
