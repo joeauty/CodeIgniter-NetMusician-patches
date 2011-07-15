@@ -593,6 +593,30 @@ class CI_Upload {
 			$this->set_error('upload_no_file_types');
 			return FALSE;
 		}
+		
+		/* NetMusician hack */
+		if ( $this->file_type == 'application/octet-stream' )
+		{
+		   if ( function_exists('finfo_file') )
+		   {
+
+		      $finfo = finfo_open(FILEINFO_MIME_TYPE);
+		      $php_mime = finfo_file($finfo, $this->file_temp);
+
+		   }
+		   elseif ( function_exists('mime_content_type') )
+		   {
+
+		      $php_mime = mime_content_type( $this->file_temp );
+
+		   }
+
+		   if ( $php_mime )
+		   {
+		      $this->file_type = $php_mime;
+		   }
+		}
+		/* End hack */
 
 		$ext = strtolower(ltrim($this->file_ext, '.'));
 
