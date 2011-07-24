@@ -231,10 +231,9 @@ class CI_Router {
 		{
 			return $segments;
 		}
-
-		if (defined('DISABLE_CIROUTING')) {
-		   	return;
-		}
+		
+		/* NetMusician hack */
+		if (defined('DISABLE_CIROUTING')) { return; }
 
 		// Is the controller in a sub-folder?
 		if (is_dir(APPPATH.'controllers/'.$segments[0]))
