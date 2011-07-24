@@ -231,6 +231,9 @@ class CI_Router {
 		{
 			return $segments;
 		}
+		
+		/* NetMusician hack */
+		if (defined('DISABLE_CIROUTING')) { return; }
 
 		if (defined('DISABLE_CIROUTING')) {
 		   	return;
