@@ -1,0 +1,26 @@
+From 6f62f225927bb50f6385ff11bdfa4f7b2a7b2089 Mon Sep 17 00:00:00 2001
+From: Joe Auty <joe@mixolydian.netmusician.org>
+Date: Sun, 24 Jul 2011 16:31:04 -0400
+Subject: [PATCH] rewrite patch
+
+---
+ system/core/Router.php |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+diff --git a/system/core/Router.php b/system/core/Router.php
+index d451aab..45e3ad3 100755
+--- a/system/core/Router.php
++++ b/system/core/Router.php
+@@ -231,6 +231,9 @@ class CI_Router {
+ 		{
+ 			return $segments;
+ 		}
++		
++		/* NetMusician hack */
++		if (defined('DISABLE_CIROUTING')) { return; }
+ 
+ 		// Is the controller in a sub-folder?
+ 		if (is_dir(APPPATH.'controllers/'.$segments[0]))
+-- 
+1.7.1.1
+
