@@ -592,30 +592,6 @@ class CI_Upload {
 			$this->set_error('upload_no_file_types');
 			return FALSE;
 		}
-		
-		/* NetMusician hack */
-		if ( $this->file_type == 'application/octet-stream' )
-		{
-		   if ( function_exists('finfo_file') )
-		   {
-
-		      $finfo = finfo_open(FILEINFO_MIME_TYPE);
-		      $php_mime = finfo_file($finfo, $this->file_temp);
-
-		   }
-		   elseif ( function_exists('mime_content_type') )
-		   {
-
-		      $php_mime = mime_content_type( $this->file_temp );
-
-		   }
-
-		   if ( $php_mime )
-		   {
-		      $this->file_type = $php_mime;
-		   }
-		}
-		/* End hack */
 
 		$ext = strtolower(ltrim($this->file_ext, '.'));
 
@@ -969,13 +945,13 @@ class CI_Upload {
 
 		if (count($this->mimes) == 0)
 		{
-			if (defined('ENVIRONMENT') AND is_file(APPPATH.'config/'.ENVIRONMENT.'/mimes'.EXT))
+			if (defined('ENVIRONMENT') AND is_file(APPPATH.'config/'.ENVIRONMENT.'/mimes.php'))
 			{
-				include(APPPATH.'config/'.ENVIRONMENT.'/mimes'.EXT);
+				include(APPPATH.'config/'.ENVIRONMENT.'/mimes.php');
 			}
-			elseif (is_file(APPPATH.'config/mimes'.EXT))
+			elseif (is_file(APPPATH.'config/mimes.php'))
 			{
-				include(APPPATH.'config//mimes'.EXT);
+				include(APPPATH.'config//mimes.php');
 			}
 			else
 			{
